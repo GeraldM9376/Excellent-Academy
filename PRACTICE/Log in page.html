@@ -1,0 +1,119 @@
+<!Doctype html>
+<html lang="en">
+    <head>
+        <title>Engineer Targie Garage</title>
+        <style>
+        body{
+          font-family: Arial;
+          margin:0;
+          background:grey;
+        }
+        header{
+          background:blue;
+          color:white;
+          padding:50px;
+          text-align: center;
+          margin:0px;
+        }
+        .services{
+          padding: 40px;
+          text-align: center;
+        }
+        .grid{
+          display:grid;
+          grid-temp-columns:repeat(2,1fr);
+          gap:15px;
+          margin-top: 20px
+        }
+        .grid div{
+          background: white;
+          padding:20px;
+          border-radius:10px
+          box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .booking{
+          padding:40px
+          background:#fff;
+          text-align:center;
+        }
+        form{
+          display:flex;
+          flex-direction: column;
+          width:300px;
+          margin:auto;
+        }
+        input,select{
+          margin:10px 0;
+          padding:10px;
+        }
+        button{
+          background:green;
+          color:white;
+          padding:10px;
+          border: none;
+          cursor:pointer;
+        }
+        footer{
+          background:#111;
+          color:white;
+          text-align: center;
+          padding: 20px;
+        }
+      </style>
+    </head>
+
+    <body>
+      <header>
+        <h1>Autospin Garage</h1> 
+        <h5>Your car's Health is our responsibility</h5>
+        <select align="left">
+          <option></option>
+          <option>Garage Ownwer</option>
+          <option>Garage Manager</option>
+          <option>Garage casual</option>
+          <option>Garage secretary </option>
+          <option>Garage Customer</option>
+          </select>
+      </header>
+
+      <section class="services">
+          <h2>Our services</h2>
+          <div class="grid">
+            <div>Engine Repair</div>
+            <div>Oil Change</div>
+            <div>Car Diagnostics</div>
+            <div>Body Repair</div>
+          </div>
+      </section>
+
+      <section id="book" class="booking">
+        <h2>Book a service</h2>
+
+        <form id="bookingform">
+            <input type="text" id="name" placeholder="Full Name"required>
+            <input type="number" id="phone" placeholder="Phone number"required>
+            <input type="text" id="car" placeholder="Number-Plate"required>
+
+            <select id="Service"> 
+              <option>Select the service</option>
+              <option>1.Engine Repair</option>
+              <option>2.Change Oil</option>
+              <option>3.Diagnostics</option>
+              <option>4.Body Repair</option>
+            </select>
+
+            <button type="submit">submit Booking</button>
+        </form>
+
+        <p id="msg"></p>
+      </section>
+
+        <footer>
+          <p>Contact: +254746806775 | Nairobi, Kenya</p>
+          <p>
+        </footer>
+
+        <script src="script.js"></script>   
+    </body>
+
+</html>

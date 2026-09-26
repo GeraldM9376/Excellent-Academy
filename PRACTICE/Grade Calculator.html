@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>High School Grading System</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f6f9;
+        margin: 0;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: auto;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+        text-align: center;
+        color: #333;
+    }
+
+    input {
+        width: 40%;
+        padding: 10px;
+        margin: 5px 0;
+        border: 1px solid #ccc;
+        border-radius: 20px;
+    }
+
+    button {
+        width: 100%;
+        padding: 10px;
+        background: #007bff;
+        color: white;
+        border: 2px solid red;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    button:hover {
+        background: #b3005f;
+    }
+
+    table {
+        width: 100%;
+        margin-top: 20px;
+        border-collapse: collapse;
+    }
+
+    table, th, td {
+        border: 1px solid #ddd;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: center;
+    }
+
+    th {
+        background: #007bff;
+        color: white;
+    }
+
+    .grade-A { color: green; font-weight: bold; }
+    .grade-B { color: blue; font-weight: bold; }
+    .grade-C { color: orange; font-weight: bold; }
+    .grade-D { color: purple; font-weight: bold; }
+    .grade-E { color: red; font-weight: bold; }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>High School Grading System</h1>
+
+    <input type="text" id="name" placeholder="Student Name"required>
+    <input type="number" id="math" placeholder="Math Marks (0-100)"required>
+    <input type="number" id="english" placeholder="English Marks (0-100)"required>
+    
+    <button onclick="addStudent()">Add Student</button>
+
+    <table>
+        <thead >
+            <tr>
+                <th>Name</th>
+                <th>Math</th>
+                <th>English</th>
+                <th>Total</th>
+                <th>Average</th>
+                <th>Grade</th>
+            </tr>
+        </thead>
+        <tbody id="results"></tbody>
+    </table>
+</div>
+
+<script>
+function getGrade(avg) {
+    if (avg >= 80) return "A";
+    else if (avg >= 70) return "B";
+    else if (avg >= 60) return "C";
+    else if (avg >= 50) return "D";
+    else return "E";
+}
+
+function addStudent() {
+    let name = document.getElementById("name").value;
+    let math = parseFloat(document.getElementById("math").value);
+    let english = parseFloat(document.getElementById("english").value);
+
+    if (!name || isNaN(math) || isNaN(english)) {
+        alert("Please fill all fields correctly!");
+        return;
+    }
+
+    let total = math + english;
+    let average = total / 2;
+    let grade = getGrade(average);
+
+    let gradeClass = "grade-" + grade;
+
+    let row = `
+        <tr>
+            <td>${name}</td>
+            <td>${math}</td>
+            <td>${english}</td>
+            <td>${total}</td>
+            <td>${average.toFixed(1)}</td>
+            <td class="${gradeClass}">${grade}</td>
+        </tr>
+    `;
+
+    document.getElementById("results").innerHTML += row;
+
+    document.getElementById("name").value = "";
+    document.getElementById("math").value = "";
+    document.getElementById("english").value = "";
+}
+</script>
+
+</body>
+</html>

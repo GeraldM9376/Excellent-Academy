@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Job Portal Login System</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #f4f4f4;
+      margin: 0;
+      text-align: center;
+    }
+
+    .container {
+      width: 350px;
+      margin: 60px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px gray;
+    }
+
+    input {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+    }
+
+    button {
+      padding: 10px;
+      width: 95%;
+      margin: 5px 0;
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .dashboard {
+      width: 500px;
+      margin: 40px auto;
+    }
+
+    .jobs button {
+      width: 150px;
+      margin: 10px;
+      background: #222;
+      color: white;
+    }
+
+    .role-box {
+      margin-top: 20px;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- LOGIN / REGISTER -->
+<div class="container" id="authBox">
+
+  <h2>Super portal</h2>
+
+  <input type="email" id="email" placeholder="Email">
+  <input type="password" id="password" placeholder="Password">
+
+  <button onclick="register()">Create Account</button>
+  <button onclick="login()">Login</button>
+
+  <p id="msg"></p>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dashboard hidden" id="dashboard">
+
+  <h2>Welcome to Job Dashboard</h2>
+  <p id="userEmail"></p>
+
+  <div class="jobs">
+    <button onclick="showRole('Manager')">Manager</button>
+    <button onclick="showRole('Cleaner')">Cleaner</button>
+    <button onclick="showRole('Cashier')">Cashier</button>
+  </div>
+
+  <div class="role-box">
+    <h3>Your Role Info</h3>
+    <p id="roleText">Click a job to see your role description</p>
+  </div>
+
+  <button onclick="logout()">Logout</button>
+</div>
+
+<script>
+  // REGISTER
+  function register() {
+    let email = document.getElementById("email").value;
+    let password = document.getElementById("password").value;
+
+    if (!email || !password) {
+      document.getElementById("msg").innerText = "Fill all fields!";
+      return;
+    }
+
+    let user = { email, password };
+
+    localStorage.setItem(email, JSON.stringify(user));
+
+    document.getElementById("msg").innerText = "Account created! Now login.";
+  }
+
+  // LOGIN
+  function login() {
+    let email = document.getElementById("email").value;
+    let password = document.getElementById("password").value;
+
+    let data = localStorage.getItem(email);
+
+    if (!data) {
+      document.getElementById("msg").innerText = "Account not found!";
+      return;
+    }
+
+    let user = JSON.parse(data);
+
+    if (user.password === password) {
+      document.getElementById("authBox").classList.add("hidden");
+      document.getElementById("dashboard").classList.remove("hidden");
+
+      document.getElementById("userEmail").innerText = "Logged in as: " + email;
+    } else {
+      document.getElementById("msg").innerText = "Wrong password!";
+    }
+  }
+
+  // SHOW ROLE
+  function showRole(role) {
+    let text = "";
+
+    if (role === "Manager") {
+      text = "You manage supermarket staff, handle reports and decisions.";
+    }
+    else if (role === "Cleaner") {
+      text = "You clean and maintain hygiene in the supermarket.";
+    }
+    else if (role === "Cashier") {
+      text = "You handle customer payments and receipts.";
+    }
+
+    document.getElementById("roleText").innerText = text;
+  }
+
+  // LOGOUT
+  function logout() {
+    document.getElementById("dashboard").classList.add("hidden");
+    document.getElementById("authBox").classList.remove("hidden");
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Bora Nishibe</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: Arial, sans-serif;
+}
+
+body{
+    background:GREEN;
+    color:#333;
+}
+
+/* HEADER */
+header{
+    background:linear-gradient(to right, #0f172a, #1e3a8a);
+    color:RED;
+    padding:20px;
+    text-align:center;
+}
+
+header h1{
+    font-size:32px;
+}
+
+/* NAV */
+nav{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    background:#111827;
+    padding:10px;
+}
+
+nav button{
+    background:none;
+    border:none;
+    color:white;
+    cursor:pointer;
+    font-size:16px;
+}
+
+nav button:hover{
+    color:#60a5fa;
+}
+
+/* SECTIONS */
+section{
+    display:none;
+    padding:20px;
+}
+
+.active{
+    display:block;
+}
+
+/* CARDS */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:15px;
+}
+
+.card{
+    background:white;
+    padding:15px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+.card h3{
+    margin-bottom:10px;
+}
+
+/* FORM */
+input, select, button{
+    width:100%;
+    padding:10px;
+    margin:8px 0;
+}
+
+button{
+    background:#1e3a8a;
+    color:white;
+    border:none;
+    cursor:pointer;
+    border-radius:5px;
+}
+
+button:hover{
+    background:#0f172a;
+}
+
+/* FOOTER */
+footer{
+    text-align:center;
+    padding:15px;
+    background:#111827;
+    color:white;
+    margin-top:20px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>SELENA HOTEL</h1>
+    <p>Luxury • Comfort • Experience</p>
+</header>
+
+<nav>
+    <button onclick="showSection('home')">Home</button>
+    <button onclick="showSection('rooms')">Rooms</button>
+    <button onclick="showSection('booking')">Booking</button>
+    <button onclick="showSection('activities')">Activities</button>
+    <button onclick="showSection('admin')">Admin</button>
+</nav>
+
+<!-- HOME -->
+<section id="home" class="active">
+    <h2>Welcome to Grand Horizon Hotel</h2>
+    <p>Experience world-class hospitality with modern comfort and luxury services.</p>
+
+    <div class="grid">
+        <div class="card">
+            <h3>Luxury Rooms</h3>
+            <p>Fully furnished rooms with WiFi, AC, and ocean view.</p>
+        </div>
+        <div class="card">
+            <h3>Fine Dining</h3>
+            <p>Enjoy local and international cuisines prepared by top chefs.</p>
+        </div>
+        <div class="card">
+            <h3>24/7 Service</h3>
+            <p>We are always available to serve you anytime.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ROOMS -->
+<section id="rooms">
+    <h2>Available Rooms</h2>
+
+    <div class="grid">
+        <div class="card">
+            <h3>Standard Room</h3>
+            <p>KES 5,000 / night</p>
+        </div>
+
+        <div class="card">
+            <h3>Deluxe Room</h3>
+            <p>KES 10,000 / night</p>
+        </div>
+
+        <div class="card">
+            <h3>Executive Suite</h3>
+            <p>KES 20,000 / night</p>
+        </div>
+    </div>
+</section>
+
+<!-- BOOKING -->
+<section id="booking">
+    <h2>Book a Room</h2>
+
+    <input type="text" id="name" p
+
+<input type="number" id="phone" placeholder="Phone Number">
+
+<select id="room">
+<option>Standard Room</option>
+<option>Deluxe Room</option>
+<option>Executive Suite</option>
+</select>
+
+<input type="date" id="date">
+
+<button onclick="bookRoom()">Submit Booking</button>
+
+<p id="msg"></p>
+</section>
+
+<!-- ACTIVITIES -->
+<section id="activities">
+<h2>Hotel Activities</h2>
+
+<div class="grid">
+<div class="card">
+<h3>Swimming Pool</h3>
+<p>Open 6AM - 10PM</p>
+</div>
+
+        <div class="card">
+            <h3>Gym Center</h3>
+            <p>Modern equipment with personal trainer</p>
+        </div>
+
+        <div class="card">
+            <h3>Spa & Massage</h3>
+            <p>Relaxing wellness services</p>
+        </div>
+
+        <div class="card">
+            <h3>City Tours</h3>
+            <p>Guided tours around the city</p>
+        </div>
+    </div>
+</section>
+
+<!-- ADMIN -->
+<section id="admin">
+    <h2>Admin Dashboard</h2>
+    <p>All bookings appear below:</p>
+    <div id="bookings"></div>
+</section>
+
+<footer>
+    <p>© 2026 Grand Horizon Hotel. All rights reserved.</p>
+</footer>
+
+<script>
+let bookings = [];
+
+function showSection(id){
+    let sections = document.querySelectorAll("section");
+    sections.forEach(sec => sec.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+
+    if(id === "admin"){
+        displayBookings();
+    }
+}
+
+function bookRoom(){
+    let name = document.getElementById("name").value;
+    let phone = document.getElementById("phone").value;
+    let room = document.getElementById("room").value;
+    let date = document.getElementById("date").value;
+
+    if(name === "" || phone === "" || date === ""){
+        document.getElementById("msg").innerText = "Please fill all fields!";
+        return;
+    }
+
+    let booking = {name, phone, room, date};
+    bookings.push(booking);
+
+    document.getElementById("msg").innerText = "Booking Successful!";
+    
+    document.getElementById("name").value = "";
+    document.getElementById("phone").value = "";
+    document.getElementById("date").value = "";
+}
+
+function displayBookings(){
+    let box = document.getElementById("bookings");
+    box.innerHTML = "";
+
+    if(bookings.length === 0){
+        box.innerHTML = "<p>No bookings yet.</p>";
+        return;
+    }
+
+    bookings.forEach((b, index) => {
+        box.innerHTML += `
+            <div class="card">
+                <h3>Booking ${index + 1}</h3>
+                <p><b>Name:</b> ${b.name}</p>
+                <p><b>Phone:</b> ${b.phone}</p>
+                <p><b>Room:</b> ${b.room}</p>
+                <p><b>Date:</b> ${b.date}</p>
+            </div>
+        `;
+    });
+}
+</script>
+
+</body>
+</html>

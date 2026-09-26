@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Personal Expense Tracker</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+  <body>
+
+    <header>
+        <h1><b>MY PERSONAL EXPENSE TRACKER</b></h1>
+    </header>
+
+    <label>Item:</label>
+    <input id="itm" type="text" placeholder="Enter item">
+    
+    <label>Amount:</label>
+    <input id="amt" type="number" placeholder="Ksh.">
+
+    <button onclick="add_item()">+Add item</button>
+    <button onclick="delete_item()">Remove item</button>
+
+    <div id="results"></div>
+    <script src="script.js"></script>
+
+    <footer>
+        <p>Above Are My Expenses</p>
+    </footer>
+
+  </body>
+</html>
+

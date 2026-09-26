@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>School System</title>
+  <style>
+    body { font-family: Arial; background:blue; text-align:center; }
+    .box { background:green; padding:20px; margin:20px auto; width:300px; border-radius:10px; }
+    button { padding:10px; margin:5px; width:90%; cursor:pointer; }
+    input { width:90%; padding:8px; margin:5px; }
+    .hidden { display:none; }
+  </style>
+</head>
+<body>
+
+<div id="home" class="box">
+  <h2>Select Role</h2>
+  <button onclick="openAuth('teacher')">Teacher</button>
+  <button onclick="openAuth('student')">Student</button>
+  <button onclick="openAuth('parent')">Parent</button>
+  <button onclick="openAuth('worker')">Worker</button>
+</div>
+
+<!-- AUTH -->
+<div id="auth" class="box hidden">
+  <h3 id="roleTitle"></h3>
+  <input id="phone" placeholder="Phone number"><br>
+  <input id="password" type="password" placeholder="Password"><br>
+  <button onclick="register()">Create Account</button>
+  <button onclick="login()">Login</button>
+</div>
+
+<!-- TEACHER DASHBOARD -->
+<div id="teacher" class="box hidden">
+  <h3>Teacher Panel</h3>
+
+  <input id="sPhone" placeholder="Student Phone">
+  <input id="math" placeholder="Subject 1 Marks">
+  <input id="eng" placeholder="Subject 2 Marks">
+  <button onclick="addMarks()">Save Marks</button>
+
+  <h4>Student Ranking</h4>
+  <div id="rankings"></div>
+</div>
+
+<!-- STUDENT DASHBOARD -->
+<div id="student" class="box hidden">
+  <h3>Student Panel</h3>
+  <div id="myData"></div>
+</div>
+
+<!-- PARENT DASHBOARD -->
+<div id="parent" class="box hidden">
+  <h3>Parent Panel</h3>
+
+  <input id="pPhone" placeholder="Student Phone">
+  <input id="fees" placeholder="Add Fees Paid">
+  <button onclick="updateFees()">Update Fees</button>
+</div>
+
+<script>
+let currentRole = "";
+let currentUser = "";
+
+// STORAGE HELPERS
+function getUsers(){
+  return JSON.parse(localStorage.getItem("users") || "[]");
+}
+function saveUsers(data){
+  localStorage.setItem("users", JSON.stringify(data));
+}
+
+// OPEN AUTH
+function openAuth(role){
+  currentRole = role;
+  document.getElementById("home").classList.add("hidden");
+  document.getElementById("auth").classList.remove("hidden");
+  document.getElementById("roleTitle").innerText = role.toUpperCase();
+}
+
+// REGISTER
+function register(){
+  let phone = document.getElementById("phone").value;
+  let pass = document.getElementById("password").value;
+
+  let users = getUsers();
+
+  if(users.find(u => u.phone === phone)){
+    alert("User already exists");
+    return;
+  }
+
+  users.push({
+    phone,
+    password: pass,
+    role: currentRole,
+    marks: {},
+    fees: 0
+  });
+
+  saveUsers(users);
+  alert("Account created!");
+}
+
+// LOGIN
+function login(){
+  let phone = document.getElementById("phone").value;
+  let pass = document.getElementById("password").value;
+
+  let users = getUsers();
+  let user = users.find(u => u.phone === phone && u.password === pass);
+
+  if(!user){
+    alert("Wrong login details");
+    return;
+  }
+
+  currentUser = user.phone;
+
+  document.getElementById("auth").classList.add("hidden");
+
+  if(user.role === "teacher") loadTeacher();
+  if(user.role === "student") loadStudent();
+  if(user.role === "parent") loadParent();
+}
+
+// TEACHER: ADD MARKS
+function addMarks(){
+  let phone = document.getElementById("sPhone").value;
+  let m1 = Number(document.getElementById("math").value);
+  let m2 = Number(document.getElementById("eng").value);
+
+  let users = getUsers();
+  let student = users.find(u => u.phone === phone);
+
+  if(!student){ alert("Student not found"); return; }
+
+  student.marks = {
+    subject1: m1,
+    subject2: m2,
+    total: m1 + m2
+  };
+
+  saveUsers(users);
+  alert("Marks saved");
+  showRanking();
+}
+
+// RANKING
+function showRanking(){
+  let users = getUsers().filter(u => u.role === "student" && u.marks.total);
+
+  users.sort((a,b) => b.marks.total - a.marks.total);
+
+  let html = "";
+  users.forEach((u,i)=>{
+    html += `<p>${i+1}. ${u.phone} - Total: ${u.marks.total}</p>`;
+  });
+
+  document.getElementById("rankings").innerHTML = html;
+}
+
+// STUDENT VIEW
+function loadStudent(){
+  document.getElementById("student").classList.remove("hidden");
+
+  let users = getUsers();
+  let me = users.find(u => u.phone === currentUser);
+
+  document.getElementById("myData").innerHTML =
+    `Phone: ${me.phone}<br>
+     Marks: ${JSON.stringify(me.marks)}<br>
+     Fees Paid: ${me.fees || 0}`;
+}
+
+// PARENT VIEW
+function loadParent(){
+  document.getElementById("parent").classList.remove("hidden");
+}
+
+// UPDATE FEES
+function updateFees(){
+  let phone = document.getElementById("pPhone").value;
+  let amount = Number(document.getElementById("fees").value);
+
+  let users = getUsers();
+  let student = users.find(u => u.phone === phone);
+
+  if(!student){ alert("Student not found"); return; }
+
+  student.fees = (student.fees || 0) + amount;
+
+  saveUsers(users);
+  alert("Fees updated");
+}
+
+// TEACHER LOAD
+function loadTeacher(){
+  document.getElementById("teacher").classList.remove("hidden");
+  showRanking();
+}
+</script>
+
+</body>
+</html>
